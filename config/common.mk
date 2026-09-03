@@ -8,7 +8,9 @@ PRODUCT_SOURCE_ROOT_DIRS += -prebuilts/misc/protobuf_vendorcompat
 # Allow vendor prebuilt repos to exclude themselves from bp scanning
 -include $(sort $(wildcard vendor/*/*/exclude-bp.mk))
 
+ifdef LINEAGE_BUILD
 PRODUCT_BRAND ?= LineageOS
+endif
 
 ifeq ($(PRODUCT_GMS_CLIENTID_BASE),)
 PRODUCT_PRODUCT_PROPERTIES += \
@@ -47,6 +49,7 @@ endif
 PRODUCT_PRODUCT_PROPERTIES += persist.sys.strictmode.disable=true
 endif
 
+ifdef LINEAGE_BUILD
 # Backup Tool
 PRODUCT_COPY_FILES += \
     vendor/lineage/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
@@ -82,6 +85,7 @@ PRODUCT_COPY_FILES += \
 # Lineage-specific init rc file
 PRODUCT_COPY_FILES += \
     vendor/lineage/prebuilt/common/etc/init/init.lineage-system_ext.rc:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/init/init.lineage-system_ext.rc
+endif
 
 # Enable SIP+VoIP on all targets
 PRODUCT_COPY_FILES += \
@@ -95,6 +99,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/base/data/keyboards/Vendor_045e_Product_028e.kl:$(TARGET_COPY_OUT_PRODUCT)/usr/keylayout/Vendor_045e_Product_0719.kl
 
+ifdef LINEAGE_BUILD
 # Component overrides
 PRODUCT_PACKAGES += \
     lineage-component-overrides.xml
@@ -102,14 +107,17 @@ PRODUCT_PACKAGES += \
 # This is Lineage!
 PRODUCT_COPY_FILES += \
     vendor/lineage/config/permissions/org.lineageos.android.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/org.lineageos.android.xml
+endif
 
 # Enforce privapp-permissions whitelist
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.control_privapp_permissions=enforce
 
+ifdef LINEAGE_BUILD
 ifneq ($(TARGET_DISABLE_LINEAGE_SDK), true)
 # Lineage SDK
 include vendor/lineage/config/lineage_sdk_common.mk
+endif
 endif
 
 # Do not include art debug targets
@@ -133,6 +141,7 @@ ifneq ($(TARGET_DISABLE_EPPE),true)
 $(call enforce-product-packages-exist-internal,$(lastword $(_include_stack)),product_manifest.xml rild Calendar android.hidl.memory@1.0-impl.vendor vndk_apex_snapshot_package)
 endif
 
+ifdef LINEAGE_BUILD
 # Bootanimation
 TARGET_SCREEN_WIDTH ?= 1080
 TARGET_SCREEN_HEIGHT ?= 1920
@@ -187,6 +196,7 @@ PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
     system/bin/getcap \
     system/bin/setcap \
     system/%/libzstd.so
+endif
 
 # fastbootd
 ifneq ($(TARGET_DISABLE_FASTBOOTD),true)
@@ -194,6 +204,7 @@ PRODUCT_PACKAGES += \
     fastbootd
 endif
 
+ifdef LINEAGE_BUILD
 # Filesystems tools
 PRODUCT_PACKAGES += \
     fsck.ntfs \
@@ -231,6 +242,7 @@ PRODUCT_PACKAGES_DEBUG += \
 # rsync
 PRODUCT_PACKAGES += \
     rsync
+endif
 
 # Storage manager
 PRODUCT_PRODUCT_PROPERTIES += \
@@ -245,6 +257,7 @@ PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
     system/bin/procmem
 endif
 
+ifdef LINEAGE_BUILD
 # Root
 PRODUCT_PACKAGES += \
     adb_root
@@ -255,6 +268,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
     system/xbin/su
+endif
 endif
 endif
 
@@ -271,14 +285,17 @@ PRODUCT_PRODUCT_PROPERTIES += \
     debug.sf.enable_transaction_tracing=false
 endif
 
+ifdef LINEAGE_BUILD
 # Audio files
 $(call inherit-product, vendor/lineage/audio/audio.mk)
+endif
 
 # SetupWizard
 PRODUCT_PRODUCT_PROPERTIES += \
     setupwizard.theme=glif_v4 \
     setupwizard.feature.day_night_mode_enabled=true
 
+ifdef LINEAGE_BUILD
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/lineage/overlay/no-rro
 PRODUCT_PACKAGE_OVERLAYS += \
     vendor/lineage/overlay/common \
@@ -288,6 +305,7 @@ PRODUCT_PACKAGES += \
     DocumentsUIOverlay \
     NetworkStackOverlay \
     PermissionControllerOverlay
+endif
 
 # Translations
 CUSTOM_LOCALES += \
@@ -299,6 +317,7 @@ CUSTOM_LOCALES += \
     fur_IT \
     nn_NO
 
+ifdef LINEAGE_BUILD
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/crowdin/overlay
 PRODUCT_PACKAGE_OVERLAYS += vendor/crowdin/overlay
 
@@ -311,3 +330,4 @@ include vendor/lineage/config/version.mk
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/lineage/config/partner_gms.mk
+endif

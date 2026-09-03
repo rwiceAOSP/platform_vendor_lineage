@@ -6,6 +6,7 @@ PRODUCT_SIZE := full
 # Include GoogleSansFlex font
 $(call inherit-product-if-exists, external/google-fonts/google-sans-flex/fonts.mk)
 
+ifdef LINEAGE_BUILD
 # Apps
 PRODUCT_PACKAGES += \
     Camelot \
@@ -38,3 +39,4 @@ PRODUCT_PACKAGES += \
 # Include Lineage LatinIME dictionaries
 PRODUCT_PACKAGE_OVERLAYS += vendor/lineage/overlay/dictionaries
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/lineage/overlay/dictionaries
+endif

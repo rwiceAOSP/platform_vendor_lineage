@@ -1,6 +1,7 @@
 # Inherit common mobile Lineage stuff
 $(call inherit-product, vendor/lineage/config/common.mk)
 
+ifdef LINEAGE_BUILD
 # Include AOSP audio files
 $(call inherit-product-if-exists, frameworks/base/data/sounds/AudioPackage14.mk)
 include vendor/lineage/config/aosp_audio.mk
@@ -17,7 +18,10 @@ PRODUCT_PRODUCT_PROPERTIES += \
 PRODUCT_PACKAGES += \
     AvatarPicker \
     Backgrounds \
-    Glimpse \
+    Glimpse
+endif
+
+PRODUCT_PACKAGES += \
     LatinIME
 
 ifeq ($(PRODUCT_TYPE), go)
@@ -34,6 +38,7 @@ PRODUCT_DEXPREOPT_SPEED_APPS += \
     Launcher3QuickStep
 endif
 
+ifdef LINEAGE_BUILD
 PRODUCT_PACKAGES += \
     Launcher3Overlay
 
@@ -50,6 +55,7 @@ endif
 # Legal
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.lineagelegal.url=https://lineageos.org/legal
+endif
 
 # Media
 PRODUCT_PRODUCT_PROPERTIES += \
@@ -74,6 +80,10 @@ PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
 
 # Themes
 PRODUCT_PACKAGES += \
+    ThemePicker
+
+ifdef LINEAGE_BUILD
+PRODUCT_PACKAGES += \
     LineageBlackTheme \
-    ThemePicker \
     ThemesStub
+endif

@@ -82,6 +82,9 @@ ifneq ($(TARGET_KERNEL_CLANG_VERSION),)
     KERNEL_CLANG_VERSION := clang-$(TARGET_KERNEL_CLANG_VERSION)
 else
     # Use the default version of clang if TARGET_KERNEL_CLANG_VERSION hasn't been set by the device config
+    ifeq ($(LLVM_AOSP_PREBUILTS_VERSION),)
+        LLVM_AOSP_PREBUILTS_VERSION := $(shell $(BUILD_TOP)/vendor/lineage/tools/get_clang_version.py 2>/dev/null)
+    endif
     KERNEL_CLANG_VERSION := $(LLVM_AOSP_PREBUILTS_VERSION)
 endif
 TARGET_KERNEL_CLANG_PATH ?= $(BUILD_TOP)/prebuilts/clang/host/$(HOST_PREBUILT_TAG)/$(KERNEL_CLANG_VERSION)
