@@ -10,4 +10,6 @@ $(call inherit-product, vendor/lineage/config/tablet.mk)
 
 $(call inherit-product, vendor/lineage/config/telephony.mk)
 
+ifdef LINEAGE_BUILD
 PRODUCT_PACKAGE_OVERLAYS += vendor/lineage/overlay/foldable_book
+endif

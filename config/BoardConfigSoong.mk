@@ -22,6 +22,7 @@ EXPORT_TO_SOONG := \
 $(call add_soong_config_namespace,lineageVarsPlugin)
 $(foreach v,$(EXPORT_TO_SOONG),$(eval $(call add_soong_config_var,lineageVarsPlugin,$(v))))
 
+ifdef LINEAGE_BUILD
 # Bootanimation
 TARGET_BOOTANIMATION_HALF_RES ?= false
 $(call soong_config_set,lineage_bootanimation,height,$(TARGET_SCREEN_HEIGHT))
@@ -45,6 +46,7 @@ else ifneq (,$(filter mdpi hdpi xhdpi xxhdpi xxxhdpi,$(PRODUCT_AAPT_PREF_CONFIG)
 lineage_charger_density := $(PRODUCT_AAPT_PREF_CONFIG)
 endif
 $(call soong_config_set,lineage_charger,density,$(lineage_charger_density))
+endif
 
 # Libui
 ifneq ($(TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS),)

@@ -47,6 +47,7 @@ endif
 PRODUCT_PRODUCT_PROPERTIES += persist.sys.strictmode.disable=true
 endif
 
+ifdef LINEAGE_BUILD
 # Backup Tool
 PRODUCT_COPY_FILES += \
     vendor/lineage/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
@@ -102,14 +103,17 @@ PRODUCT_PACKAGES += \
 # This is Lineage!
 PRODUCT_COPY_FILES += \
     vendor/lineage/config/permissions/org.lineageos.android.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/org.lineageos.android.xml
+endif
 
 # Enforce privapp-permissions whitelist
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.control_privapp_permissions=enforce
 
+ifdef LINEAGE_BUILD
 ifneq ($(TARGET_DISABLE_LINEAGE_SDK), true)
 # Lineage SDK
 include vendor/lineage/config/lineage_sdk_common.mk
+endif
 endif
 
 # Do not include art debug targets
@@ -133,6 +137,7 @@ ifneq ($(TARGET_DISABLE_EPPE),true)
 $(call enforce-product-packages-exist-internal,$(lastword $(_include_stack)),product_manifest.xml rild Calendar android.hidl.memory@1.0-impl.vendor vndk_apex_snapshot_package)
 endif
 
+ifdef LINEAGE_BUILD
 # Bootanimation
 TARGET_SCREEN_WIDTH ?= 1080
 TARGET_SCREEN_HEIGHT ?= 1920
@@ -187,6 +192,7 @@ PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
     system/bin/getcap \
     system/bin/setcap \
     system/%/libzstd.so
+endif
 
 # fastbootd
 ifneq ($(TARGET_DISABLE_FASTBOOTD),true)
@@ -194,6 +200,7 @@ PRODUCT_PACKAGES += \
     fastbootd
 endif
 
+ifdef LINEAGE_BUILD
 # Filesystems tools
 PRODUCT_PACKAGES += \
     fsck.ntfs \
@@ -257,6 +264,7 @@ PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
     system/xbin/su
 endif
 endif
+endif
 
 # SystemUI
 PRODUCT_DEXPREOPT_SPEED_APPS += \
@@ -271,6 +279,7 @@ PRODUCT_PRODUCT_PROPERTIES += \
     debug.sf.enable_transaction_tracing=false
 endif
 
+ifdef LINEAGE_BUILD
 # Audio files
 $(call inherit-product, vendor/lineage/audio/audio.mk)
 
@@ -311,3 +320,4 @@ include vendor/lineage/config/version.mk
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/lineage/config/partner_gms.mk
+endif
